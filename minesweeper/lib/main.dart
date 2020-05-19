@@ -35,6 +35,46 @@ class _BoardState extends State<Board> {
   }
 
   @override
+  void initState(){
+    reset();
+    super.initState();
+  }
+
+  Widget newBoard() {
+    List<Row> boardRow = <Row>[];
+    for(int i =0; i< rows; i++) {
+      List<Widget> rowChild = <Widget>[];
+      for(int j=0; j<cols; j++){
+        TileState state = stateUI[i][j];
+        if(state == TileState.covered) {
+          rowChild.add(GestureDetector(
+            child: Listener(
+              child: Container(
+                margin: EdgeInsets.all(2.0),
+                height: 20.0,
+                width: 20.0,
+                color: Colors.grey,
+              ),
+            ),
+          ));
+        }
+      }
+      boardRow.add(Row(
+        children: rowChild,
+        mainAxisAlignment: MainAxisAlignment.center,
+        key: ValueKey<int>(i),
+      ));
+    }
+    return Container(
+      color: Colors.grey[700],
+      padding: EdgeInsets.all(10.0),
+      child: Column(
+        children: boardRow,
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container();
   }
