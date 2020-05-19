@@ -76,7 +76,17 @@ class _BoardState extends State<Board> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("MineSweeper"),
+      ),
+      body: Container(
+        color: Colors.grey[50],
+        child: Center(
+          child: newBoard(),
+        ),
+      ),
+    );
   }
 }
 
