@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
@@ -160,8 +161,40 @@ class CoveredTile extends StatelessWidget {
 }
 
 class OpenTile extends StatelessWidget {
+  final TileState state;
+  final int count;
+
+  OpenTile(this.state, this.count);
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    Widget text;
+    if(state == TileState.open) {
+      if(count != 0) {
+        text = RichText(
+          text: TextSpan(
+            text: '$count',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+            ),
+          ),
+          textAlign: TextAlign.center,
+        );
+      }
+      } else {
+        text = RichText(
+          text: TextSpan(
+            text: '\u2739',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.red,
+            ),
+          ),
+          textAlign: TextAlign.center,
+        );
+      }
+    return buildTile(buildInnerTile(text));
+    }
   }
-}
+
