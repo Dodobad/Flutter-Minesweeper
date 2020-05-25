@@ -64,11 +64,10 @@ class _BoardState extends State<Board> {
         if (state == TileState.covered) {
           rowChild.add(GestureDetector(
             child: Listener(
-              child: Container(
-                margin: EdgeInsets.all(2.0),
-                height: 20.0,
-                width: 20.0,
-                color: Colors.grey,
+              child: CoveredTile(
+                flag: state == TileState.flagged,
+                posX: i,
+                posY: j,
               ),
             ),
           ));
@@ -148,7 +147,15 @@ class CoveredTile extends StatelessWidget {
         textAlign: TextAlign.center,
       ));
     }
-    return Container();
+    Widget innerTile = Container(
+      padding: EdgeInsets.all(1.0),
+      margin: EdgeInsets.all(2.0),
+      height: 20.0,
+      width: 20.0,
+      color: Colors.grey[350],
+      child: text,
+    );
+    return buildTile(innerTile);
   }
 }
 
