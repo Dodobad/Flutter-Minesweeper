@@ -72,6 +72,8 @@ class _BoardState extends State<Board> {
               ),
             ),
           ));
+        } else {
+          rowChild.add(OpenTile(state, 1));
         }
       }
       boardRow.add(Row(
@@ -169,8 +171,8 @@ class OpenTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget text;
-    if(state == TileState.open) {
-      if(count != 0) {
+    if (state == TileState.open) {
+      if (count != 0) {
         text = RichText(
           text: TextSpan(
             text: '$count',
@@ -182,19 +184,18 @@ class OpenTile extends StatelessWidget {
           textAlign: TextAlign.center,
         );
       }
-      } else {
-        text = RichText(
-          text: TextSpan(
-            text: '\u2739',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.red,
-            ),
+    } else {
+      text = RichText(
+        text: TextSpan(
+          text: '\u2739',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.red,
           ),
-          textAlign: TextAlign.center,
-        );
-      }
-    return buildTile(buildInnerTile(text));
+        ),
+        textAlign: TextAlign.center,
+      );
     }
+    return buildTile(buildInnerTile(text));
   }
-
+}
