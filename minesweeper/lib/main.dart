@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-enum TileState {covered, wrong, open, flagged, reveal}
-
+enum TileState { covered, wrong, open, flagged, reveal }
 
 void main() => runApp(MineSweeper());
 
@@ -28,7 +27,6 @@ class _BoardState extends State<Board> {
   List<List<TileState>> stateUI;
   List<List<bool>> tile;
 
-
   void reset() {
     stateUI = new List<List<TileState>>.generate(rows, (row) {
       return new List<TileState>.filled(cols, TileState.covered);
@@ -44,7 +42,7 @@ class _BoardState extends State<Board> {
       int pos = random.nextInt(rows * cols);
       int row = pos ~/ rows; //integer division
       int col = pos % cols;
-      if(!tile[row][col]) {
+      if (!tile[row][col]) {
         tile[row][col] = true;
         remainingMines--;
       }
@@ -52,18 +50,18 @@ class _BoardState extends State<Board> {
   }
 
   @override
-  void initState(){
+  void initState() {
     reset();
     super.initState();
   }
 
   Widget newBoard() {
     List<Row> boardRow = <Row>[];
-    for(int i =0; i< rows; i++) {
+    for (int i = 0; i < rows; i++) {
       List<Widget> rowChild = <Widget>[];
-      for(int j=0; j<cols; j++){
+      for (int j = 0; j < cols; j++) {
         TileState state = stateUI[i][j];
-        if(state == TileState.covered) {
+        if (state == TileState.covered) {
           rowChild.add(GestureDetector(
             child: Listener(
               child: Container(
@@ -129,8 +127,27 @@ Widget buildInnerTile(Widget child) {
 }
 
 class CoveredTile extends StatelessWidget {
+  final bool flag;
+  final int posX;
+  final int posY;
+
+  CoveredTile({this.flag, this.posX, this.posY});
+
   @override
   Widget build(BuildContext context) {
+    Widget text;
+    if (flag) {
+      text = buildInnerTile(RichText(
+        text: TextSpan(
+          text: "\u2691",
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        textAlign: TextAlign.center,
+      ));
+    }
     return Container();
   }
 }
@@ -141,6 +158,3 @@ class OpenTile extends StatelessWidget {
     return Container();
   }
 }
-
-
-
