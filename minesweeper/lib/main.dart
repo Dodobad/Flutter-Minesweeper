@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'dart:math';
 
 enum TileState {covered, wrong, open, flagged, reveal}
 
@@ -26,12 +26,29 @@ class _BoardState extends State<Board> {
   final int cols = 9;
   final int mines = 11;
   List<List<TileState>> stateUI;
+  List<List<bool>> tile;
 
 
   void reset() {
     stateUI = new List<List<TileState>>.generate(rows, (row) {
       return new List<TileState>.filled(cols, TileState.covered);
     });
+
+    tile = new List<List<bool>>.generate(rows, (row) {
+      return new List<bool>.filled(cols, false);
+    });
+
+    Random random = Random();
+    int remainingMines = mines;
+    while (remainingMines > 0) {
+      int pos = random.nextInt(rows * cols);
+      int row = pos ~/ rows; //integer division
+      int col = pos % cols;
+      if(!tile[row][col]) {
+        tile[row][col] = true;
+        remainingMines--;
+      }
+    }
   }
 
   @override
@@ -89,4 +106,41 @@ class _BoardState extends State<Board> {
     );
   }
 }
+
+Widget buildTile(Widget child) {
+  return Container(
+    padding: EdgeInsets.all(1.0),
+    height: 30.0,
+    width: 30.0,
+    color: Colors.grey[400],
+    margin: EdgeInsets.all(2.0),
+    child: child,
+  );
+}
+
+Widget buildInnerTile(Widget child) {
+  return Container(
+    padding: EdgeInsets.all(1.0),
+    margin: EdgeInsets.all(2.0),
+    height: 20.0,
+    width: 20.0,
+    child: child,
+  );
+}
+
+class CoveredTile extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
+class OpenTile extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
+
 
