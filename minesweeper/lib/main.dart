@@ -62,8 +62,11 @@ class _BoardState extends State<Board> {
       List<Widget> rowChild = <Widget>[];
       for (int x = 0; x < cols; x++) {
         TileState state = stateUI[y][x];
-        if (state == TileState.covered) {
+        if (state == TileState.covered || state == TileState.flagged) {
           rowChild.add(GestureDetector(
+            onLongPress: () {
+              flag(x,y);
+            },
             child: Listener(
               child: CoveredTile(
                 flag: state == TileState.flagged,
@@ -105,6 +108,17 @@ class _BoardState extends State<Board> {
       ),
     );
   }
+
+  void flag(int x, int y) {
+    setState(() {
+      if(stateUI[y][x] == TileState.flagged){
+        stateUI[y][x] = TileState.covered;
+      } else {
+        stateUI[y][x] = TileState.flagged;
+      }
+    });
+  }
+
   int mineCount(int x, int y) {
     int count = 0;
     count+= bombs(x-1, y);
@@ -117,8 +131,11 @@ class _BoardState extends State<Board> {
     count+= bombs(x+1, y+1);
     return count;
   }
+
   int bombs(int x, int y) => inBoard(x, y) && tile[y][x] ? 1 : 0;
+
   bool inBoard(int x, int y) => x>= 0 && x < cols && y >= 0 && y < rows;
+
 }
 
 Widget buildTile(Widget child) {
