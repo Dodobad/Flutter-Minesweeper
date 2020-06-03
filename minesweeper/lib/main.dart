@@ -62,10 +62,14 @@ class _BoardState extends State<Board> {
       List<Widget> rowChild = <Widget>[];
       for (int x = 0; x < cols; x++) {
         TileState state = stateUI[y][x];
+        int count = mineCount(x,y);
         if (state == TileState.covered || state == TileState.flagged) {
           rowChild.add(GestureDetector(
             onLongPress: () {
               flag(x,y);
+            },
+            onTap: () {
+              probe(x,y);
             },
             child: Listener(
               child: CoveredTile(
@@ -76,7 +80,7 @@ class _BoardState extends State<Board> {
             ),
           ));
         } else {
-          rowChild.add(OpenTile(state, 1));
+          rowChild.add(OpenTile(state, count));
         }
       }
       boardRow.add(Row(
@@ -109,11 +113,31 @@ class _BoardState extends State<Board> {
     );
   }
 
+  void probe (int x, int y) {
+    if (stateUI[y][x] == TileState.flagged) return;
+    setState(() {
+      if(tile[y][x]) {
+        stateUI[y][x] = TileState.wrong;
+      } else {
+        open(x,y);
+      }
+    });
+  }
+
   void open(int x , int y) {
     if (!inBoard(x,y)) return;
     if (stateUI[y][x] == TileState.open) return;
     stateUI[y][x] = TileState.open;
     if(mineCount(x, y) > 0) return;
+
+    open(x-1, y);
+    open(x+1, y);
+    open(x-1, y-1);
+    open(x-1, y+1);
+    open(x+1, y-1);
+    open(x-1, y+1);
+    open(x, y-1);
+    open(x, y+1);
   }
 
   void flag(int x, int y) {
