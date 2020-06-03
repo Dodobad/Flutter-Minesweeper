@@ -58,17 +58,17 @@ class _BoardState extends State<Board> {
 
   Widget newBoard() {
     List<Row> boardRow = <Row>[];
-    for (int i = 0; i < rows; i++) {
+    for (int y = 0; y < rows; y++) {
       List<Widget> rowChild = <Widget>[];
-      for (int j = 0; j < cols; j++) {
-        TileState state = stateUI[i][j];
+      for (int x = 0; x < cols; x++) {
+        TileState state = stateUI[y][x];
         if (state == TileState.covered) {
           rowChild.add(GestureDetector(
             child: Listener(
               child: CoveredTile(
                 flag: state == TileState.flagged,
-                posX: i,
-                posY: j,
+                posX: y,
+                posY: x,
               ),
             ),
           ));
@@ -79,7 +79,7 @@ class _BoardState extends State<Board> {
       boardRow.add(Row(
         children: rowChild,
         mainAxisAlignment: MainAxisAlignment.center,
-        key: ValueKey<int>(i),
+        key: ValueKey<int>(y),
       ));
     }
     return Container(
@@ -105,6 +105,20 @@ class _BoardState extends State<Board> {
       ),
     );
   }
+  int mineCount(int x, int y) {
+    int count = 0;
+    count+= bombs(x-1, y);
+    count+= bombs(x+1, y);
+    count+= bombs(x, y-1);
+    count+= bombs(x, y+1;
+    count+= bombs(x-1, y-1);
+    count+= bombs(x-1, y+1);
+    count+= bombs(x+1, y-1);
+    count+= bombs(x+1, y+1);
+    return count;
+  }
+  int bombs(int x, int y) => inBoard(x, y) && tile[y][x] ? 1 : 0;
+  bool inBoard(int x, int y) => x>= 0 && x < cols && y >= 0 && y < rows;
 }
 
 Widget buildTile(Widget child) {
