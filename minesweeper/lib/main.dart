@@ -109,6 +109,13 @@ class _BoardState extends State<Board> {
     );
   }
 
+  void open(int x , int y) {
+    if (!inBoard(x,y)) return;
+    if (stateUI[y][x] == TileState.open) return;
+    stateUI[y][x] = TileState.open;
+    if(mineCount(x, y) > 0) return;
+  }
+
   void flag(int x, int y) {
     setState(() {
       if(stateUI[y][x] == TileState.flagged){
@@ -124,7 +131,7 @@ class _BoardState extends State<Board> {
     count+= bombs(x-1, y);
     count+= bombs(x+1, y);
     count+= bombs(x, y-1);
-    count+= bombs(x, y+1;
+    count+= bombs(x, y+1);
     count+= bombs(x-1, y-1);
     count+= bombs(x-1, y+1);
     count+= bombs(x+1, y-1);
